@@ -25,10 +25,17 @@ using namespace sf;
 
 void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
-	RenderWindow wnd(VideoMode(200, 200, mode.bitsPerPixel), "TestWnd");
+	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
 	
-	CircleShape circle(50.f);
-	circle.setFillColor(Color::Green);
+	Image img;
+	img.loadFromFile("./test.png");
+	
+	Texture textu;
+	textu.loadFromImage(img);
+	
+	Sprite actor;
+	actor.setTexture(textu);
+	actor.setPosition(50, 25);
 	
 	Event event;
 	while(wnd.isOpen()) {
@@ -37,7 +44,7 @@ void main() {
 		}
 		
 		wnd.clear();
-		wnd.draw(circle);
+		wnd.draw(actor);
 		wnd.display();
 	}
 }
