@@ -15,7 +15,7 @@ Author:
 
 // EP.cpp
 
-#include <SFML\Graphics.hpp>
+#include "Actor.hpp"
 
 #pragma comment(lib, "sfml-system-d")
 #pragma comment(lib, "sfml-window-d")
@@ -23,32 +23,45 @@ Author:
 
 using namespace sf;
 
-void KeyPress(Sprite& act, float& fTime, float& fFrame) {
+void KeyPress(CActor& act, float& fTime, float& fFrame) {
 	if(Keyboard::isKeyPressed(Keyboard::Left)) {
+		act.m_nDir = 1; act.m_fSpeed = 0.1f;
+	
 		fFrame += 0.005f*fTime;
 		if(fFrame > 3.f) fFrame -= 3.f; // ACHTUNG !!!!
 	
-		act.setTextureRect(IntRect(96*static_cast<int>(fFrame), 96, 96, 96));
-		act.move(-0.1f*fTime, 0.f);
+		act.m_Sprite.setTextureRect(IntRect(96*static_cast<int>(fFrame), 96, 96, 96)); // !
 	}
 	
 	if(Keyboard::isKeyPressed(Keyboard::Right)) {
-		act.move(0.1f*fTime, 0.f);
-		act.setTextureRect(IntRect(0, 192, 96, 96));
+		act.m_nDir = 0; act.m_fSpeed = 0.1f;
+	
+		fFrame += 0.005f*fTime;
+		if(fFrame > 3.f) fFrame -= 3.f;
+		
+		act.m_Sprite.setTextureRect(IntRect(96*static_cast<int>(fFrame), 192, 96, 96));
 	}
 	
 	if(Keyboard::isKeyPressed(Keyboard::Up)) {
-		act.move(0.f*fTime, -0.1f);
-		act.setTextureRect(IntRect(0, 288, 96, 96));
+		act.m_nDir = 3; act.m_fSpeed = 0.1f;
+		
+		fFrame += 0.005f*fTime;
+		if(fFrame > 3.f) fFrame -= 3.f;
+		
+		act.m_Sprite.setTextureRect(IntRect(96*static_cast<int>(fFrame), 288, 96, 96));
 	}
 	
 	if(Keyboard::isKeyPressed(Keyboard::Down)) {
-		act.move(0.f*fTime, 0.1f);
-		act.setTextureRect(IntRect(0, 0, 96, 96));
+		act.m_nDir = 2; act.m_fSpeed = 0.1f;
+		
+		fFrame += 0.005f*fTime;
+		if(fFrame > 3.f) fFrame -= 3.f;
+
+		act.m_Sprite.setTextureRect(IntRect(96*static_cast<int>(fFrame), 0, 96, 96));
 	}
 	
 	if(Mouse::isButtonPressed(Mouse::Left)) {
-		act.setColor(Color::Red);
+		act.m_Sprite.setColor(Color::Red);
 	}
 }
 
@@ -58,13 +71,7 @@ void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
 	
-	Texture textu;
-	textu.loadFromFile("./test.png");
-	
-	Sprite actor;
-	actor.setTexture(textu);
-	actor.setTextureRect(IntRect(0, 192, 96, 96));
-	actor.setPosition(50, 25);
+	CActor actor("Actor.png", 250, 250, 96.f, 96.f);
 	
 	Event event;
 	Clock clock;
@@ -78,9 +85,10 @@ void main() {
 		}
 		
 		KeyPress(actor, fTime, fCurrFrame);
+		actor.Frame(fTime);
 		
 		wnd.clear();
-		wnd.draw(actor);
+		wnd.draw(actor.m_Sprite);
 		wnd.display();
 	}
 }
