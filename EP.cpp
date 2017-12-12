@@ -23,6 +23,32 @@ Author:
 
 using namespace sf;
 
+void KeyPress(Sprite& act) {
+	if(Keyboard::isKeyPressed(Keyboard::Left)) {
+		act.move(-0.1f, 0.f);
+		act.setTextureRect(IntRect(0, 96, 96, 96));
+	}
+	
+	if(Keyboard::isKeyPressed(Keyboard::Right)) {
+		act.move(0.1f, 0.f);
+		act.setTextureRect(IntRect(0, 192, 96, 96));
+	}
+	
+	if(Keyboard::isKeyPressed(Keyboard::Up)) {
+		act.move(0.f, -0.1f);
+		act.setTextureRect(IntRect(0, 288, 96, 96));
+	}
+	
+	if(Keyboard::isKeyPressed(Keyboard::Down)) {
+		act.move(0.f, 0.1f);
+		act.setTextureRect(IntRect(0, 0, 96, 96));
+	}
+	
+	if(Mouse::isButtonPressed(Mouse::Left)) {
+		act.setColor(Color::Red);
+	}
+}
+
 void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
@@ -40,6 +66,8 @@ void main() {
 		while(wnd.pollEvent(event)) {
 			if(event.type == Event::Closed) wnd.close();
 		}
+		
+		KeyPress(actor);
 		
 		wnd.clear();
 		wnd.draw(actor);
