@@ -24,9 +24,14 @@ Author:
 using namespace sf;
 
 void KeyPress(Sprite& act, float& fTime) {
+	float fCurrFrame = 0.f;
+
 	if(Keyboard::isKeyPressed(Keyboard::Left)) {
+		fCurrFrame += 0.005f*fTime;
+		if(fCurrFrame > 3.f) fCurrFrame -= 3.f; // ACHTUNG !!!!
+	
+		act.setTextureRect(IntRect(96*static_cast<int>(fCurrFrame), 96, 96, 96));
 		act.move(-0.1f*fTime, 0.f);
-		act.setTextureRect(IntRect(0, 96, 96, 96));
 	}
 	
 	if(Keyboard::isKeyPressed(Keyboard::Right)) {
@@ -50,8 +55,6 @@ void KeyPress(Sprite& act, float& fTime) {
 }
 
 void main() {
-	float teleport = 0.f;
-
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
 	
@@ -66,22 +69,15 @@ void main() {
 	Event event;
 	Clock clock;
 	while(wnd.isOpen()) {
-		float time = clock.getElapsedTime().asMicroseconds();
-		time /= 400;
+		float fTime = clock.getElapsedTime().asMicroseconds();
+		fTime /= 400;
 		clock.restart();
-		
-		teleport += time;
-		
-		if(teleport > 3000.f) { // ACHTUNG !!!!
-			actor.setPosition(0, 150);
-			teleport = 0.f;
-		}
 	
 		while(wnd.pollEvent(event)) {
 			if(event.type == Event::Closed) wnd.close();
 		}
 		
-		KeyPress(actor, time);
+		KeyPress(actor, fTime);
 		
 		wnd.clear();
 		wnd.draw(actor);
