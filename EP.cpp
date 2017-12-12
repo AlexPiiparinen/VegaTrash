@@ -27,6 +27,9 @@ void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(200, 200, mode.bitsPerPixel), "TestWnd");
 	
+	CircleShape circle(50.f);
+	circle.setFillColor(Color::Green);
+	
 	Event event;
 	while(wnd.isOpen()) {
 		while(wnd.pollEvent(event)) {
@@ -34,6 +37,7 @@ void main() {
 		}
 		
 		wnd.clear();
+		wnd.draw(circle);
 		wnd.display();
 	}
 }
