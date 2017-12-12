@@ -27,14 +27,12 @@ void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
 	
-	Image img;
-	img.loadFromFile("./test.png");
-	
 	Texture textu;
-	textu.loadFromImage(img);
+	textu.loadFromFile("./test.png");
 	
 	Sprite actor;
 	actor.setTexture(textu);
+	actor.setTextureRect(IntRect(0, 192, 96, 96));
 	actor.setPosition(50, 25);
 	
 	Event event;
