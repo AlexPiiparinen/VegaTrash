@@ -17,6 +17,7 @@ Author:
 
 #include "Actor.hpp"
 
+
 #define RES_DIR "Data/tails/"
 
 CActor::CActor() : m_fX(0.f), m_fY(0.f), m_fW(0.f), m_fH(0.f),
@@ -34,6 +35,7 @@ CActor::CActor(std::string szFileName, float fX, float fY, float fW, float fH) {
 	m_Texture.loadFromImage(m_Img);
 	
 	m_Sprite.setTexture(m_Texture);
+	m_Sprite.setTextureRect(IntRect(0, 0, 98, 98));
 	
 	m_fX = fX; m_fY = fY;
 	m_fDx = 0.f; m_fDy = 0.f; 

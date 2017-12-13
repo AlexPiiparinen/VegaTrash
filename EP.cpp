@@ -17,11 +17,44 @@ Author:
 
 #include "Actor.hpp"
 
+#define MAP_HEIGHT 15
+#define MAP_WIDTH 15
+
 #pragma comment(lib, "sfml-system-d")
 #pragma comment(lib, "sfml-window-d")
 #pragma comment(lib, "sfml-graphics-d")
 
 using namespace sf;
+
+std::string szMap[MAP_HEIGHT] = {
+	"0000000000000000",
+	"0111111111111110",
+	"0111112111111110",
+	"0111211111111110",
+	"0111121111111110",
+	"0111112111111110",
+	"0111111111111110",
+	"0111111111111110",
+	"0111111110000000",
+	"0111111110112110",
+	"0111111210111110",
+	"0111111110111110",
+	"0111111210011110",
+	"0111111111111110",
+	"0000000000000000",
+};
+
+void DrawMap(RenderWindow& wnd, Sprite& map) {
+	for(int i=0; i<MAP_HEIGHT; i++)
+		for(int j=0; j<MAP_WIDTH; j++) {
+			if(szMap[i][j] == '0') map.setTextureRect(IntRect(64, 0, 32, 32));
+			if(szMap[i][j] == '1') map.setTextureRect(IntRect(0, 0, 32, 32));
+			if(szMap[i][j] == '2') map.setTextureRect(IntRect(32, 0, 32, 32));
+			
+			map.setPosition(j*32, i*32);
+			wnd.draw(map);
+		}
+}
 
 void KeyPress(CActor& act, float& fTime, float& fFrame) {
 	if(Keyboard::isKeyPressed(Keyboard::Left)) {
@@ -71,7 +104,13 @@ void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
 	
-	CActor actor("Actor.png", 250, 250, 96.f, 96.f);
+	// Map
+	Texture mapText;
+	mapText.loadFromFile("./Data/tails/Level0.png");
+	Sprite map;
+	map.setTexture(mapText);
+	
+	CActor actor("Actor.png", 100.f, 100.f, 96.f, 96.f);
 	
 	Event event;
 	Clock clock;
@@ -88,6 +127,7 @@ void main() {
 		actor.Frame(fTime);
 		
 		wnd.clear();
+		DrawMap(wnd, map);
 		wnd.draw(actor.m_Sprite);
 		wnd.display();
 	}
