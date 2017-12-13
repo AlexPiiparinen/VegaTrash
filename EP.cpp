@@ -33,13 +33,13 @@ std::string szMap[MAP_HEIGHT] = {
 	"0111211111111110",
 	"0111121111111110",
 	"0111112111111110",
-	"0111111111111110",
-	"0111111111111110",
 	"0111111110000000",
-	"0111111110112110",
-	"0111111210111110",
 	"0111111110111110",
+	"0111111110111110",
+	"0111111110112110",
 	"0111111210011110",
+	"0111111111111110",
+	"0111111211111110",
 	"0111111111111110",
 	"0000000000000000",
 };
@@ -104,6 +104,13 @@ void main() {
 	VideoMode mode = VideoMode::getDesktopMode();
 	RenderWindow wnd(VideoMode(640, 480, mode.bitsPerPixel), "TestWnd");
 	
+	// Font
+	Font font;
+	font.loadFromFile("./Data/fonts/main.ttf");
+	Text txt("Vegetables game", font, 20);
+	txt.setColor(Color::Green);
+	txt.setPosition(50.f, 50.f);
+	
 	// Map
 	Texture mapText;
 	mapText.loadFromFile("./Data/tails/Level0.png");
@@ -129,6 +136,7 @@ void main() {
 		wnd.clear();
 		DrawMap(wnd, map);
 		wnd.draw(actor.m_Sprite);
+		wnd.draw(txt);
 		wnd.display();
 	}
 }
