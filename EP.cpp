@@ -110,7 +110,7 @@ void main() {
 	Sprite map;
 	map.setTexture(mapText);
 	
-	CActor actor("Actor.png", 100.f, 100.f, 96.f, 96.f);
+	CActor actor("Actor.png", szMap, 100.f, 100.f, 96.f, 96.f);
 	
 	Event event;
 	Clock clock;

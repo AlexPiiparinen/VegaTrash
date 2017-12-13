@@ -21,12 +21,14 @@ Author:
 #define RES_DIR "Data/tails/"
 
 CActor::CActor() : m_fX(0.f), m_fY(0.f), m_fW(0.f), m_fH(0.f),
-					m_fDx(0.f), m_fDy(0.f), m_fSpeed(0.f), m_nDir(-1) {
+					m_fDx(0.f), m_fDy(0.f), m_fSpeed(0.f), m_nDir(-1),
+					m_pszMap(NULL) {
 	m_szFileName = "";
 }
 
-CActor::CActor(std::string szFileName, float fX, float fY, float fW, float fH) {
+CActor::CActor(std::string szFileName, std::string* szMap, float fX, float fY, float fW, float fH) {
 	m_szFileName = szFileName;
+	m_pszMap = szMap;
 	
 	m_fW = fW; m_fH = fH;
 	
@@ -42,6 +44,10 @@ CActor::CActor(std::string szFileName, float fX, float fY, float fW, float fH) {
 	
 	m_fSpeed = 0.f; 
 	m_nDir = -1;
+}
+
+CActor::~CActor() {
+	m_pszMap = NULL;
 }
 
 void CActor::Frame(float& fTime) {
@@ -67,4 +73,18 @@ void CActor::Frame(float& fTime) {
 	m_fX += m_fDx*fTime; m_fY += m_fDy*fTime;
 	m_fSpeed = 0.f;
 	m_Sprite.setPosition(m_fX, m_fY);
+	
+	Collision();
+}
+
+void CActor::Collision() {
+	for(int i = m_fY/32; i < (m_fY+m_fH)/32; i++)
+		for(int j = m_fX/32; j < (m_fX+m_fW)/32; j++) {
+			 if(m_pszMap[i][j] == '0') {
+				if(m_fDy > 0) m_fY = i*32 - m_fH; 
+				else if(m_fDy < 0) m_fY = i*32 + 32;
+				else if(m_fDx > 0) m_fX = j*32 - m_fW;
+				else m_fX = j*32 + 32;
+			}
+		}
 }
